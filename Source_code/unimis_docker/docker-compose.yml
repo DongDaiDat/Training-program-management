@@ -1,0 +1,27 @@
+services:
+  unimis_db:
+    image: postgres:16
+    container_name: unimis_db
+    environment:
+      POSTGRES_DB: unimis
+      POSTGRES_USER: unimis
+      POSTGRES_PASSWORD: unimis
+    ports:
+      - "5432:5432"
+    volumes:
+      - unimis_pgdata:/var/lib/postgresql/data
+
+  unimis_web:
+    build: .
+    container_name: unimis_web
+    depends_on:
+      - unimis_db
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+volumes:
+  unimis_pgdata:
